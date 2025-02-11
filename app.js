@@ -10,6 +10,7 @@ const auth = require("./middleware/auth");
 const app = express();
 
 app.use(express.json({ limit: "50mb" }));
+ app.use(auth.middleware);
 
 app.post("/register", async (req, res) => {
   try {
@@ -92,7 +93,7 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.get("/welcome", auth, (req, res) => {
+app.get("/welcome", auth.verifyToken, (req, res) => {
   res.status(200).send("Welcome to FreeCodeCamp 🙌");
 });
 

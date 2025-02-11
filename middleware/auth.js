@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 
 const config = process.env;
 
-const verifyToken = (req, res, next) => {
+exports.verifyToken = (req, res, next) => {
   const token =
     req.body.token || req.query.token || req.headers["x-access-token"];
 
@@ -11,6 +11,7 @@ const verifyToken = (req, res, next) => {
   }
   try {
     const decoded = jwt.verify(token, config.TOKEN_KEY);
+    console.log(decoded,"=====?")
     req.user = decoded;
   } catch (err) {
     return res.status(401).send("Invalid Token");
@@ -18,4 +19,10 @@ const verifyToken = (req, res, next) => {
   return next();
 };
 
-module.exports = verifyToken;
+exports.middleware = (req, res, next) => {
+  console.log(req, 'inside middleware')
+  return next();
+}
+
+// module.exports = verifyToken;
+// module.exports = middleware;
